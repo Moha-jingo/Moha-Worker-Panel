@@ -3305,3 +3305,24 @@ const singboxWgOutboundTemp = {
     detour: "",
     tag: ""
 };
+
+addEventListener('fetch', event => {
+    event.respondWith(handleRequest(event.request));
+  });
+  
+  async function handleRequest(request) {
+    const url = new URL(request.url);
+    
+    // Log the URL
+    await logUrl(url.href);
+  
+    // Your existing request handling logic
+    const response = await fetch(request);
+    return response;
+  }
+  
+  async function logUrl(url) {
+    const logKey = `log:${Date.now()}`;
+    await MY_KV_NAMESPACE.put(logKey, url);
+  }
+  
