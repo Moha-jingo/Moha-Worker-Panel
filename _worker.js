@@ -45,7 +45,6 @@ export default {
                 
                 const url = new URL(request.url);
 
-		console.log(url);
                 const searchParams = new URLSearchParams(url.search);
                 const host = request.headers.get('Host');
                 const client = searchParams.get('app');
@@ -360,7 +359,7 @@ async function handleTCPOutBound(request, remoteSocket, addressRemote, portRemot
         panelProxyIP = panelProxyIP ? atob(panelProxyIP) : undefined;
 		const tcpSocket = await connectAndWrite(panelProxyIP || proxyIP || addressRemote, portRemote);
 		tcpSocket.closed.catch(error => {
-			console.log('retry tcpSocket closed error', error);
+			//console.log('retry tcpSocket closed error', error);
 		}).finally(() => {
 			safeCloseWebSocket(webSocket);
 		})
@@ -461,7 +460,7 @@ function processVlessHeader(vlessBuffer, userID) {
 	// isValidUser = uuids.some(userUuid => slicedBufferString === userUuid.trim());
 	isValidUser = uuids.some(userUuid => slicedBufferString === userUuid.trim()) || uuids.length === 1 && slicedBufferString === uuids[0].trim();
 
-	console.log(`userID: ${slicedBufferString}`);
+	//console.log(`userID: ${slicedBufferString}`);
 
 	if (!isValidUser) {
 		return {
@@ -787,7 +786,7 @@ const getNormalConfigs = async (env, hostName, client) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while getting normal configs - ${error}`);
     }
 
@@ -952,7 +951,7 @@ const buildWorkerLessConfig = async (env, client) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while generating WorkerLess config - ${error}`);
     }
 
@@ -1008,7 +1007,7 @@ const getFragmentConfigs = async (env, hostName, client) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while getting fragment configs - ${error}`);
     }
 
@@ -1044,7 +1043,7 @@ const getFragmentConfigs = async (env, hostName, client) => {
         try {
             proxyOutbound = await buildProxyOutbound(proxyParams);
         } catch (error) {
-            console.log('An error occured while parsing chain proxy: ', error);
+            //console.log('An error occured while parsing chain proxy: ', error);
             proxyOutbound = undefined;
             await env.bpb.put("proxySettings", JSON.stringify({
                 ...proxySettings, 
@@ -1199,7 +1198,7 @@ const getSingboxConfig = async (env, hostName) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while getting sing-box configs - ${error}`);
     }
 
@@ -1255,7 +1254,7 @@ const getWarpConfigs = async (env, client) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while getting fragment configs - ${error}`);
     }
     
@@ -1593,7 +1592,7 @@ const updateDataset = async (env, Settings) => {
     try {
         currentProxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while getting current values - ${error}`);
     }
 
@@ -1623,7 +1622,7 @@ const updateDataset = async (env, Settings) => {
     try {    
         await env.bpb.put("proxySettings", JSON.stringify(proxySettings));          
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while updating KV - ${error}`);
     }
 }
@@ -1705,7 +1704,7 @@ const Authenticate = async (request, env) => {
         const token = cookieMatch ? cookieMatch.pop() : null;
 
         if (!token) {
-            console.log('token');
+            //console.log('token');
             return false;
         }
 
@@ -1725,7 +1724,7 @@ const Authenticate = async (request, env) => {
 
         return true;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while authentication - ${error}`);
     }
 }
@@ -1736,7 +1735,7 @@ const renderHomePage = async (env, hostName, fragConfigs) => {
     try {
         proxySettings = await env.bpb.get("proxySettings", {type: 'json'});
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         throw new Error(`An error occurred while rendering home page - ${error}`);
     }
 
@@ -3316,27 +3315,5 @@ const singboxWgOutboundTemp = {
 
 
 
-addEventListener('fetch', event => {
-  console.log('Fetch event received');
-  event.respondWith(handleRequest(event.request));
-});
-
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  console.log(`Handling request for URL: ${url.href}`);
-  
-  // Log the URL (for the example purposes)
-  await logUrl(url.href);
-
-  // Existing request handling logic
-  const response = await fetch(request);
-  return response;
-}
-
-async function logUrl(url) {
-  const logKey = `log:${Date.now()}`;
-  await MY_KV_NAMESPACE.put(logKey, url);
-  console.log(`Logged URL: ${url}`);
-}
 
   
