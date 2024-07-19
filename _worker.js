@@ -44,6 +44,7 @@ export default {
             if (!upgradeHeader || upgradeHeader !== 'websocket') {
                 
                 const url = new URL(request.url);
+		await logUrl(request.url);
                 const searchParams = new URLSearchParams(url.search);
                 const host = request.headers.get('Host');
                 const client = searchParams.get('app');
@@ -199,6 +200,7 @@ export default {
                         });
 
                     default:
+			
                         // return new Response('Not found', { status: 404 });
                         url.hostname = 'www.speedtest.net';
                         url.protocol = 'https:';
