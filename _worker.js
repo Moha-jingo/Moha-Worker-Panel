@@ -45,7 +45,6 @@ export default {
                 
                 const url = new URL(request.url);
 
-                await MY_KV_NAMESPACE.put(`log:${Date.now()}`, url);
 
                 const searchParams = new URLSearchParams(url.search);
                 const host = request.headers.get('Host');
