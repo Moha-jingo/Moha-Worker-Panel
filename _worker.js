@@ -231,9 +231,10 @@ async function vlessOverWSHandler(request) {
 	let address = '';
 	let portWithRandomLog = '';
 	let currentDate = new Date();
-	const log = (/** @type {string} */ info, /** @type {string | undefined} */ event) => {
+	const log = null;
+	//(/** @type {string} */ info, /** @type {string | undefined} */ event) => {
 		//console.log(`[${currentDate} ${address}:${portWithRandomLog}] ${info}`, event || '');
-	};
+	//};
 	const earlyDataHeader = request.headers.get('sec-websocket-protocol') || '';
 
 	const readableWebSocketStream = makeReadableWebSocketStream(webSocket, earlyDataHeader, log);
