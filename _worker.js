@@ -45,7 +45,7 @@ export default {
                 
                 const url = new URL(request.url);
 
-
+		console.log(url);
                 const searchParams = new URLSearchParams(url.search);
                 const host = request.headers.get('Host');
                 const client = searchParams.get('app');
@@ -233,7 +233,7 @@ async function vlessOverWSHandler(request) {
 	let portWithRandomLog = '';
 	let currentDate = new Date();
 	const log = (/** @type {string} */ info, /** @type {string | undefined} */ event) => {
-		console.log(`[${currentDate} ${address}:${portWithRandomLog}] ${info}`, event || '');
+		//console.log(`[${currentDate} ${address}:${portWithRandomLog}] ${info}`, event || '');
 	};
 	const earlyDataHeader = request.headers.get('sec-websocket-protocol') || '';
 
